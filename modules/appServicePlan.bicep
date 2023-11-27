@@ -25,6 +25,9 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2022-09-01' = {
   sku:{
     name: sku
   }
+  properties: {
+    reserved: true
+  }
 }
 
 output appServicePlanID string = appServicePlan.id

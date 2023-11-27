@@ -8,6 +8,12 @@ param namePrefix string = 'demo1'
 @description('Azure Region used to create the resources')
 param location string = resourceGroup().location
 
+@description('Docker image to deploy')
+param dockerImage string = 'nginxdemos/hello'
+
+@description('Reference the docker image tag')
+param dockerImageTag string = 'latest'
+
 // ***************************************************************
 
 // Template definition
@@ -37,6 +43,8 @@ module appService 'modules/appService.bicep'= {
     appServicePlanID: ASP.outputs.appServicePlanID
     namePrefix: namePrefix
     location: location
+    dockerImage: dockerImage
+    dockerImageTag: dockerImageTag
   }
 }
 
