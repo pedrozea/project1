@@ -6,7 +6,7 @@ on:
     workflow_dispatch:
 
 jobs:
-    build:
+    deploy:
         runs-on: ubuntu-latest
         steps:
             - name: Echo Script
@@ -18,8 +18,12 @@ jobs:
             - name: Login to Azure
               uses: azure/login@v1
               with:
-                creds: '${{ secrets.AZURE_CREDENTIALS}}'
+                creds: ${{ secrets.AZURE_CREDENTIALS}}
 
+            - name: Create Resource Group if not exists
+              run: |
+                  az group create --name rg-github-bicep-lab --location eastus
+              
             - name: Deploy the Bicep template
               uses: azure/arm-deploy@v1
               with:
