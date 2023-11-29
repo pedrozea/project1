@@ -29,5 +29,8 @@ jobs:
               with:
                 resourceGroupName: "rg-github-bicep-lab"
                 template: main.bicep
+                parameters: |
+                    namePrefix=pzeaghlab1
+
 
 
