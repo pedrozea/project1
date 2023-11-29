@@ -1,0 +1,29 @@
+name: Deploy Bicep Template to Azure
+
+on:
+    push:
+        branches: ["main"]
+    workflow_dispatch:
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Echo Script
+              run: echo "Starting Bicep Deployment to Microsoft Azure"
+
+            - name: Checkout Code
+              uses: actions/checkout@v3
+
+            - name: Login to Azure
+              uses: azure/login@v1
+              with:
+                creds: '${{ secrets.AZURE_CREDENTIALS}}'
+
+            - name: Deploy the Bicep template
+              uses: azure/arm-deploy@v1
+              with:
+                resourceGroupName: "rg-github-bicep-lab"
+                template: main.bicep
+
+
