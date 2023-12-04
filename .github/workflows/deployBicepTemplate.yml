@@ -31,6 +31,3 @@ jobs:
                 template: main.bicep
                 parameters: |
                     namePrefix=pzeaghlab1
-
-
-
