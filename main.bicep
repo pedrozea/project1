@@ -19,7 +19,7 @@ param dockerImageTag string = 'latest'
 // Template definition
 // ***************************************************************
 
-module storage 'modules/storage.bicep'= {
+module storage 'modules/storageAccount/main.bicep'= {
   name: '${namePrefix}storage'
   params:{
     storageName: namePrefix
@@ -27,7 +27,7 @@ module storage 'modules/storage.bicep'= {
   }
 }
 
-module ASP 'modules/appServicePlan.bicep'= {
+module ASP 'modules/appServicePlan/main.bicep'= {
   name: '${namePrefix}-ASP'
   params:{
     namePrefix: namePrefix
@@ -37,7 +37,7 @@ module ASP 'modules/appServicePlan.bicep'= {
   }
 }
 
-module appService 'modules/appService.bicep'= {
+module appService 'modules/appService/main.bicep'= {
   name: '${namePrefix}-webapp'
   params:{
     appServicePlanID: ASP.outputs.appServicePlanID

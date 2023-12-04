@@ -1,0 +1,10 @@
+{
+    "version": {
+        "major": 0,
+        "minor": 1,
+        "patch": 0
+    },
+    "itemDisplayName": "App Service Plan",
+    "description": "App Service Plan Bicep Module",
+    "summary": "Summary describing the Bicep App Service Plan Module."    
+  }

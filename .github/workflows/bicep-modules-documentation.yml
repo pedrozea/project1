@@ -1,0 +1,57 @@
+name: Generate Bicep Module Documentation
+
+on:
+    push:
+        branches: ["main"]
+    workflow_dispatch:
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+
+        - name: Install PowerShell
+          run: |
+            sudo apt-get update
+            sudo apt-get install -y powershell
+
+        - name: Install PSDocs Modules
+          run: |
+            pwsh -Command "Install-Module -Name PSDocs -Force -Scope CurrentUser"
+            pwsh -Command "Install-Module -Name PSDocs.Azure -Force -Scope CurrentUser"
+
+         # Generate module documentation in Readme.md file
+        - name: Generate module documentation
+          run: |
+            for module_path in modules/*; do
+                if [ -d "$module_path" ]; then
+                    cd "$module_path"
+            
+                    # Check if Readme.md exists
+                    if [ ! -f README.md ]; then
+                        echo "README.md does not exist in $module_path. Generating new README.md."
+                        output_and_error=$(pwsh ./scripts/generateBicepReadme.ps1 -templatePath ./main.bicep 2>&1)
+                        echo "$output_and_error"
+                        exit_code=$?
+                        if [ $exit_code -ne 0 ]; then
+                            echo "Error generating README.md in $module_path: $output_and_error"
+                        else
+                            echo "README.md successfully generated in $module_path."
+                        fi
+                    else
+                        # Check if there have been any changes in the component
+                        bicep_changed=$(git diff --name-only HEAD~1 | grep "$module_path/main.bicep")
+                        if [ ! -z "$bicep_changed" ]; then
+                            echo "Bicep module changed in $module_path. Updating README.md."
+                            output_and_error=$(pwsh ./scripts/generateBicepReadme.ps1 -templatePath ./main.bicep 2>&1)
+                            exit_code=$?
+                            if [ $exit_code -ne 0 ]; then
+                                echo "Error updating README.md in $module_path: $output_and_error"
+                            else
+                                echo "README.md successfully updated in $module_path."
+                            fi
+                        fi
+                    fi      
+                    cd - > /dev/null
+                fi
+            done

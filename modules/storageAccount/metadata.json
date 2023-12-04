@@ -1,0 +1,10 @@
+{
+    "version": {
+        "major": 0,
+        "minor": 1,
+        "patch": 0
+    },
+    "itemDisplayName": "Storage Account",
+    "description": "Storage Account Bicep Module",
+    "summary": "Summary describing the Bicep Storage Account Module."    
+  }
