@@ -34,7 +34,7 @@ jobs:
                     # Check if Readme.md exists or if it's the first commit
                     if [ ! -f README.md ] || ! git rev-parse HEAD~1 > /dev/null 2>&1; then
                         echo "README.md does not exist in $module_path. Generating new README.md for $module_path."
-                        output_and_error=$(pwsh ./scripts/generateBicepReadme.ps1 -templatePath ./main.bicep 2>&1)
+                        output_and_error=$(pwsh ../../scripts/generateBicepReadme.ps1 -templatePath ./main.bicep 2>&1)
                         echo "$output_and_error"
                         exit_code=$?
                         if [ $exit_code -ne 0 ]; then
@@ -47,7 +47,7 @@ jobs:
                         bicep_changed=$(git diff --name-only HEAD~1 | grep "main.bicep")
                         if [ ! -z "$bicep_changed" ]; then
                             echo "Bicep module changed in $module_path. Updating README.md."
-                            output_and_error=$(pwsh ./scripts/generateBicepReadme.ps1 -templatePath ./main.bicep 2>&1)
+                            output_and_error=$(pwsh ../../scripts/generateBicepReadme.ps1 -templatePath ./main.bicep 2>&1)
                             exit_code=$?
                             if [ $exit_code -ne 0 ]; then
                                 echo "Error updating README.md in $module_path: $output_and_error"
