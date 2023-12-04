@@ -28,12 +28,12 @@ jobs:
           run: |
             echo "Current Directory: $(pwd)"
             for module_path in modules/*; do
-                if [ -d "$module_path" ]; then
+                if [ -d "$module_path" ] && [ -f "$module_path/main.bicep" ]; then
                     cd "$module_path"
             
-                    # Check if Readme.md exists
-                    if [ ! -f README.md ]; then
-                        echo "README.md does not exist in $module_path. Generating new README.md."
+                    # Check if Readme.md exists or if it's the first commit
+                    if [ ! -f README.md ] || ! git rev-parse HEAD~1 > /dev/null 2>&1; then
+                        echo "README.md does not exist in $module_path. Generating new README.md for $module_path."
                         output_and_error=$(pwsh ./scripts/generateBicepReadme.ps1 -templatePath ./main.bicep 2>&1)
                         echo "$output_and_error"
                         exit_code=$?
@@ -44,7 +44,7 @@ jobs:
                         fi
                     else
                         # Check if there have been any changes in the component
-                        bicep_changed=$(git diff --name-only HEAD~1 | grep "$module_path/main.bicep")
+                        bicep_changed=$(git diff --name-only HEAD~1 | grep "main.bicep")
                         if [ ! -z "$bicep_changed" ]; then
                             echo "Bicep module changed in $module_path. Updating README.md."
                             output_and_error=$(pwsh ./scripts/generateBicepReadme.ps1 -templatePath ./main.bicep 2>&1)
