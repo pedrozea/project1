@@ -20,9 +20,13 @@ jobs:
             pwsh -Command "Install-Module -Name PSDocs -Force -Scope CurrentUser"
             pwsh -Command "Install-Module -Name PSDocs.Azure -Force -Scope CurrentUser"
 
-         # Generate module documentation in Readme.md file
+        - name: Checkout code
+          uses: actions/checkout@v4
+
+        # Generate module documentation in Readme.md file
         - name: Generate module documentation
           run: |
+            echo "Current Directory: $(pwd)"
             for module_path in modules/*; do
                 if [ -d "$module_path" ]; then
                     cd "$module_path"
