@@ -1,60 +1,55 @@
-# App Service
+# App Service Plan
 
-Summary describing the Bicep App Service Module.
+Summary describing the Bicep App Service Plan Module.
 
-App Service Bicep Module
+App Service Plan Bicep Module
 
 ## Parameters
 
 Parameter name | Required | Description
 -------------- | -------- | -----------
-namePrefix     | Yes      | AppService Name Prefix
-location       | No       | Azure region to deploy
-appServicePlanID | Yes      | ASP id
-dockerImage    | No       | Docker image to deploy
-dockerImageTag | No       | Reference the docker image tag
+namePrefix     | Yes      | ASP Name Prefix
+location       | No       | ASP Azure Region
+sku            | No       | ASP sku
+kind           | No       | ASP OS
 
 ### namePrefix
 
 ![Parameter Setting](https://img.shields.io/badge/parameter-required-orange?style=flat-square)
 
-AppService Name Prefix
+ASP Name Prefix
 
 ### location
 
 ![Parameter Setting](https://img.shields.io/badge/parameter-optional-green?style=flat-square)
 
-Azure region to deploy
+ASP Azure Region
 
 - Default value: `[resourceGroup().location]`
 
-### appServicePlanID
-
-![Parameter Setting](https://img.shields.io/badge/parameter-required-orange?style=flat-square)
-
-ASP id
-
-### dockerImage
+### sku
 
 ![Parameter Setting](https://img.shields.io/badge/parameter-optional-green?style=flat-square)
 
-Docker image to deploy
+ASP sku
 
-- Default value: `nginxdemos/hello`
+- Default value: `B1`
 
-### dockerImageTag
+### kind
 
 ![Parameter Setting](https://img.shields.io/badge/parameter-optional-green?style=flat-square)
 
-Reference the docker image tag
+ASP OS
 
-- Default value: `latest`
+- Default value: `linux`
+
+- Allowed values: `linux`, `windows`
 
 ## Outputs
 
 Name | Type | Description
 ---- | ---- | -----------
-webURL | string |
+appServicePlanID | string |
 
 ## Snippets
 
@@ -74,14 +69,11 @@ webURL | string |
         "location": {
             "value": "[resourceGroup().location]"
         },
-        "appServicePlanID": {
-            "value": ""
+        "sku": {
+            "value": "B1"
         },
-        "dockerImage": {
-            "value": "nginxdemos/hello"
-        },
-        "dockerImageTag": {
-            "value": "latest"
+        "kind": {
+            "value": "linux"
         }
     }
 }
