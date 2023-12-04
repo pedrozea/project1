@@ -8,9 +8,9 @@ on:
 permissions:
     id-token: write
     contents: write
-    
+
 jobs:
-    deploy:
+    generate-documentation:
         runs-on: ubuntu-latest
         steps:
 
@@ -26,6 +26,13 @@ jobs:
 
         - name: Checkout code
           uses: actions/checkout@v4
+          with:
+            token: ${{ secrets.GITHUB_TOKEN }}
+
+        - name: Configure Git
+          run: |
+            git config --global user.name 'github-actions[bot]'
+            git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
         # Generate module documentation in Readme.md file
         - name: Generate module documentation
@@ -63,3 +70,13 @@ jobs:
                     cd - > /dev/null
                 fi
             done
+
+        - name: Commit README.md files
+          run: |
+            git add modules/*/README.md
+            git commit -m "Update Bicep module documentation"
+
+        - name: Push changes to the repository
+          run: git push
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
