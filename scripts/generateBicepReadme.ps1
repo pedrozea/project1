@@ -87,9 +87,10 @@ if ($ValidMetaData) {
     # Generate a standard name of the markdown file. i.e. <name>_<version>.md
     $template = Get-Item -Path $_.TemplateFile;
 
-    # Generate markdown
-    Invoke-PSDocument -Module PSDocs.Azure -OutputPath $templateDir -InputObject $template.FullName -InstanceName $docName
-
+    # Generate markdown with specified culture
+    Invoke-PSDocument -Module PSDocs.Azure -OutputPath $templateDir -InputObject $template.FullName -InstanceName $docName -Option @{
+      'Output.Culture' = 'en-US'
+  }
   }
 } else {
   Throw "Invalid metadata in $metadataPath"
